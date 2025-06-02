@@ -20,19 +20,21 @@ TinyGPSPlus gps;
 
 string hdopAssessment(){
     double hdop = gps.hdop.value();
+    string ret;
     if(hdop < 1.0){
-        return HDOP_IDEAL;
+        ret = HDOP_IDEAL;
     } else if(hdop < 2.0){
-        return HDOP_EXCELLENT;
+        ret = HDOP_EXCELLENT;
     } else if(hdop < 5.0){
-        return HDOP_GOOD;
+        ret = HDOP_GOOD;
     } else if(hdop < 10.0){
-        return HDOP_MODERATE;
+        ret =  HDOP_MODERATE;
     } else if(hdop < 20.0){
-        return HDOP_FAIR;
+        ret = HDOP_FAIR;
     } else {
-        return HDOP_POOR;
+        ret = HDOP_POOR;
     }
+    return ret + " (" + std::to_string(hdop) + ")";
 }
 
 // RX interrupt handler
