@@ -44,7 +44,7 @@ void on_uart_rx() {
     }
     // Print GPS data
     if (gps.location.isValid()) {
-        printf("Latitude: %f, Longitude: %f, Accuracy: %s\n", gps.location.lat(), gps.location.lng(), hdopAssessment());
+        std::cout << "Latitude: " << gps.location.lat() << ", Longitude: " << gps.location.lng() << ", Accuracy: " << hdopAssessment() << "\n";
     }
 }
 
