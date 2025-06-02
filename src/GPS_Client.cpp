@@ -50,6 +50,7 @@ void on_uart_rx() {
 
 int main() {
     // Initialize UART
+    stdio_usb_init();
     uart_init(UART_ID, UART_BAUD);
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
