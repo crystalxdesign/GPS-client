@@ -34,7 +34,7 @@ string hdopAssessment(){
     } else {
         ret = HDOP_POOR;
     }
-    return ret + " (" + std::to_string(hdop) + ")";
+    return ret + " (" + std::to_string((int)hdop) + ")";
 }
 
 // RX interrupt handler
@@ -47,6 +47,18 @@ void on_uart_rx() {
     // Print GPS data
     if (gps.location.isValid()) {
         std::cout << "Latitude: " << gps.location.lat() << ", Longitude: " << gps.location.lng() << ", Accuracy: " << hdopAssessment() << "\n";
+        clearDisplay();
+        setCursor(0, 0);
+        printString((char*)"Latitude:");
+        setCursor(10, 9);
+        printString(std::to_string(gps.location.lat()).data());
+        setCursor(0, 18);
+        printString((char*)"Longitude:");
+        setCursor(10, 27);
+        printString(std::to_string(gps.location.lng()).data());
+        setCursor(0, 37);
+        printString(hdopAssessment().data());
+        display();
     }
 }
 
@@ -56,6 +68,12 @@ int main() {
     uart_init(UART_ID, UART_BAUD);
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+    // call the LCD initialization
+    Nokia5110_Init();
+    clearDisplay();
+    setContrast(0x1f);
+    setRotation(2);
+    introGraphic();
     //gpio_set_pulls(UART_RX_PIN, gpio_pull_up, gpio_pull_down);
     uart_set_format(UART_ID, 8, 1, UART_PARITY_NONE);
     uart_set_hw_flow(UART_ID, false, false);
@@ -68,8 +86,7 @@ int main() {
     // Now enable the UART to send interrupts - RX only
     uart_set_irq_enables(UART_ID, true, false);
 
-    while (1){
+    while (1)
         tight_loop_contents();
-    }
     return 0;
 }

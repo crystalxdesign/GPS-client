@@ -32,8 +32,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-//#include "TinyGPSPlus.h"
 #include "TinyGPSPlus.h"
+#include "Nokia5110.h"
 /*
  * Usual header code here
  */
