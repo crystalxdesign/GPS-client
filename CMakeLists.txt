@@ -7,6 +7,7 @@ project(GPS_Client VERSION 1.0.0)
 add_executable(${PROJECT_NAME}
     src/GPS_Client.cpp
     src/TinyGPSPlus.cpp
+    src/Nokia5110.c
 )
 
 pico_sdk_init()
@@ -20,6 +21,7 @@ target_link_libraries(${PROJECT_NAME}
     pico_time
     hardware_uart
     hardware_gpio
+    hardware_spi
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
