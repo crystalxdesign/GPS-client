@@ -3,11 +3,16 @@ $fn=50;
 boxLength = 120;
 boxWidth = 60;
 wallheight = 30;
+wallthickness = 4;
 
-union(){
-    Walls();
-    Rim();
-    Base();
+difference()  {
+    union(){
+        Walls();
+        Rim();
+        Base();
+    };
+    UsbPortHole();
+    SwitchHole();
 }
 
 module Rim(){
@@ -19,11 +24,27 @@ module Rim(){
             }
 }
 
+module UsbPortHole(){
+    translate([-67,0,15])
+        rotate([0,90,0])
+            rotate([0,0,90])
+                linear_extrude(height = 10, scale = 1)
+                    offset(r=2.6)
+                        square([0.2, 7.0], center = true);
+}
+
+
+module SwitchHole(){
+    translate([62,0,15])
+        rotate([0,90,0])                        linear_extrude(height = 10, center = true)
+                circle(d=14.5);
+}
+
 module Walls(){
     linear_extrude(height = wallheight, scale = 1)
         difference()  {
             BoxFootprint(boxLength,boxWidth);
-            BoxFootprint(boxLength-10,boxWidth-10);
+            BoxFootprint(boxLength-wallthickness,boxWidth-wallthickness);
         }
 }
 
@@ -34,6 +55,6 @@ module Base(){
 }
 
 module BoxFootprint(x, y){
-    offset(r=10)
+    offset(r=wallthickness)
         square([x, y], center = true);
 }
