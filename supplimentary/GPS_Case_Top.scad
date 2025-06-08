@@ -2,9 +2,10 @@ echo(version=version());
 
 screenWidth = 37;
 screenLength = 40;
-basethickness = 4;
+basethickness = 5;
 boxLength = 120;
 boxWidth = 60;
+wallthickness = 4;
 
 main();
 
@@ -55,13 +56,12 @@ module Base(){
 }
 
 module BoxFootprint(x, y){
-    offset(r=10)
+    offset(r=wallthickness)
         square([x, y], center = true);
 }
 
 module Rim(){
-
-    linear_extrude(height = 2, scale = 1)
+    linear_extrude(height = 3, scale = 1)
         translate([0,-30,2])
             BoxFootprint(boxWidth-5, boxLength-5);
 }
