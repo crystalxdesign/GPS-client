@@ -1,7 +1,12 @@
 echo(version=version());
 
-screenWidth = 37;
-screenLength = 40;
+isRed = false;
+screenWidth = isRed ? 37 : 34;
+screenLength = isRed ? 40 : 40;
+screenHoleOffsetX = isRed ? 1.5 : -2.1;
+screenHoleOffsetY = isRed ? 2.4 : 3.1 ;
+screwHoleRadius = isRed ? 1.0 : 1.65;
+
 basethickness = 5;
 boxLength = 120;
 boxWidth = 60;
@@ -31,12 +36,12 @@ module AerialHole(){
     linear_extrude(height = basethickness+2)
         translate([0,-60,-2])
             offset(r=1.5)
-                square([22, 22], center = true);
+                square([22.5, 22.5], center = true);
 }
 
 module ScrewHoles(){
-    x = (screenLength/2)+1.5;
-    y = (screenWidth/2)+2.4;
+    x = (screenLength/2)+screenHoleOffsetX;
+    y = (screenWidth/2)+screenHoleOffsetY;
     ScrewHole(-x,-y);
     ScrewHole(x,-y);
     ScrewHole(-x,y);
@@ -46,7 +51,7 @@ module ScrewHoles(){
 module ScrewHole(x,y){
      linear_extrude(height = basethickness+2)
         translate([x,y,-2])
-            circle(1,$fn=50);
+            circle(screwHoleRadius,$fn=50);
 }
 
 module Base(){
