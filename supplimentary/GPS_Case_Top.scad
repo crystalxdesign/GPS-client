@@ -1,10 +1,11 @@
 echo(version=version());
 
+$fn=50;
 isRed = false;
 screenWidth = isRed ? 37 : 34;
 screenLength = isRed ? 40 : 40;
-screenHoleOffsetX = isRed ? 1.5 : -2.1;
-screenHoleOffsetY = isRed ? 2.4 : 3.1 ;
+screenHoleOffsetX = isRed ? 0.5 : -2.8;
+screenHoleOffsetY = isRed ? 2.0 : 3.5 ;
 screwHoleRadius = isRed ? 1.0 : 1.65;
 
 basethickness = 5;
