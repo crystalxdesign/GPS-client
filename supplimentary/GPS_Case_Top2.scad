@@ -9,9 +9,11 @@ screenHoleOffsetY = isRed ? 2.0 : 3.5 ;
 screwHoleRadius = isRed ? 1.0 : 1.65;
 
 basethickness = 4;
-boxLength = 120;
-boxWidth = 60;
+boxLength = 100;
+boxWidth = 50;
 wallthickness = 4;
+
+corners = [[boxWidth/2,boxLength/2,0],[-boxWidth/2,-boxLength/2,0],[boxWidth/2,-boxLength/2,0],[-boxWidth/2,boxLength/2,0]];
 
 main();
 
@@ -23,7 +25,7 @@ module main(){
                 ScreenHole();
                 ScrewHoles();
                 AerialHole();
-                Rim();
+                #Rim();
              }
 }
 
@@ -35,7 +37,7 @@ module ScreenHole(){
 
 module AerialHole(){
     linear_extrude(height = basethickness+2)
-        translate([0,-60,-2])
+        translate([0,-50,-2])
             offset(r=1.5)
                 square([22.5, 22.5], center = true);
 }
@@ -56,9 +58,19 @@ module ScrewHole(x,y){
 }
 
 module Base(){
-    translate([0,-30,0])
-        linear_extrude(height = basethickness, scale = 1)
-            BoxFootprint(boxWidth,boxLength);
+    //translate([0,-25,0])
+    //    linear_extrude(height = basethickness, scale = 1)
+    //        BoxFootprint(boxWidth,boxLength);
+    translate([0,-25,0])
+        difference()  {
+            hull(){
+                for (a = corners)
+                    translate([a[0],a[1],a[2]]) 
+                        sphere(wallthickness);
+            };
+       translate([0,0,-wallthickness])
+            cube([boxWidth+10, boxLength+10, 10], center = true);
+    }
 }
 
 module BoxFootprint(x, y){
@@ -68,6 +80,6 @@ module BoxFootprint(x, y){
 
 module Rim(){
     linear_extrude(height = 3, scale = 1)
-        translate([0,-30,2])
+        translate([0,-25,2])
             BoxFootprint(boxWidth-5, boxLength-5);
 }
