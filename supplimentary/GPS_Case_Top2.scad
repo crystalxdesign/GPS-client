@@ -1,7 +1,7 @@
 echo(version=version());
 
 $fn=50;
-isRed = true;
+isRed = false;
 screenWidth = isRed ? 37 : 34;
 screenLength = isRed ? 40 : 40;
 screenHoleOffsetX = isRed ? 0.5 : -2.8;
@@ -82,8 +82,8 @@ module Rim(){
     translate([0,-25,-1])
         linear_extrude(height = 4, scale = 1)
             difference()  {
-                BoxFootprint(boxWidth-3, boxLength-3);
-                BoxFootprint(boxWidth-5, boxLength-5);
+                BoxFootprint(boxWidth-4, boxLength-4);
+                BoxFootprint(boxWidth-6, boxLength-6);
             }
 }
 
