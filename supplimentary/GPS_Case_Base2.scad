@@ -8,14 +8,18 @@ boxCornerCurveRadius = wallthickness;
 corners = [[0,0,0],[boxWidth,0,0],[0,boxLength,0],[boxWidth,boxLength,0],
 [0,0,wallheight],[boxWidth,0,wallheight],[0,boxLength,wallheight],[boxWidth,boxLength,wallheight]];
 
-difference()  {
-    translate([-boxWidth,-boxLength/4,boxCornerCurveRadius])
-        hull(){
-            BoxCorners();
-        };
-    BoxVoid();
-    UsbPortHole();
-    SwitchHole();
+main();
+
+module main(){
+    difference()  {
+        translate([-boxWidth,-boxLength/4,boxCornerCurveRadius])
+            hull(){
+                BoxCorners();
+            };
+        BoxVoid();
+        UsbPortHole();
+        SwitchHole();
+    }
 }
 
 module BoxVoid(){
@@ -41,7 +45,7 @@ module UsbPortHole(){
             rotate([0,0,90])
                 linear_extrude(height = 10, scale = 1)
                     offset(r=2.65)
-                        square([0.2, 8.3], center = true);
+                        square([1.2, 9.3], center = true);
 }
 
 
@@ -49,7 +53,7 @@ module SwitchHole(){
     translate([52,0,boxCornerCurveRadius+wallheight/2])
         rotate([0,90,0])
             linear_extrude(height = 10, center = true)
-                circle(d=15);
+                circle(d=16);
 }
 
 module Walls(){

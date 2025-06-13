@@ -1,7 +1,7 @@
 echo(version=version());
 
 $fn=50;
-isRed = false;
+isRed = true;
 screenWidth = isRed ? 37 : 34;
 screenLength = isRed ? 40 : 40;
 screenHoleOffsetX = isRed ? 0.5 : -2.8;
