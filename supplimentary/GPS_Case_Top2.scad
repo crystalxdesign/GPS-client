@@ -20,12 +20,15 @@ main();
 module main(){
     translate([0,0,basethickness])
         rotate([180,0,0])
-            difference()  {
-                Base();
-                ScreenHole();
-                ScrewHoles();
-                AerialHole();
-                #Rim();
+            union(){
+                difference()  {
+                    Base();
+                    ScreenHole();
+                    ScrewHoles();
+                    AerialHole();
+                    Hollow();
+                 };
+                 #Rim();
              }
 }
 
@@ -58,9 +61,6 @@ module ScrewHole(x,y){
 }
 
 module Base(){
-    //translate([0,-25,0])
-    //    linear_extrude(height = basethickness, scale = 1)
-    //        BoxFootprint(boxWidth,boxLength);
     translate([0,-25,0])
         difference()  {
             hull(){
@@ -79,7 +79,16 @@ module BoxFootprint(x, y){
 }
 
 module Rim(){
-    linear_extrude(height = 3, scale = 1)
+    translate([0,-25,-1])
+        linear_extrude(height = 4, scale = 1)
+            difference()  {
+                BoxFootprint(boxWidth-3, boxLength-3);
+                BoxFootprint(boxWidth-5, boxLength-5);
+            }
+}
+
+module Hollow(){
+    linear_extrude(height = 2, scale = 1)
         translate([0,-25,2])
-            BoxFootprint(boxWidth-5, boxLength-5);
+            BoxFootprint(boxWidth-8, boxLength-8);
 }
