@@ -42,13 +42,22 @@
 #define PCD8544_SETBIAS 0x10
 #define PCD8544_SETVOP 0x80
 
+// Hash-out following if using a standard RP2030 PICO Board
+#define is_RP2030_Zero
 #define SPI_PORT spi0
+#ifdef is_RP2030_Zero
+#define LCD_CS   5
+#define LCD_SCK  2
+#define LCD_MOSI 3
+#define LCD_DC   14
+#define LCD_RST  15
+#else
 #define LCD_CS   17
 #define LCD_SCK  18
 #define LCD_MOSI 19
 #define LCD_DC   20
 #define LCD_RST  21
-
+#endif
 
 void Nokia5110_Init(void);
 
