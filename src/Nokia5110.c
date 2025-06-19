@@ -1014,6 +1014,7 @@ void drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[], int16_t w, int16_t
         writePixel(x + i, y, colour);
     }
   }
+  display();
   //endWrite();
 }
 

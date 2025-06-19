@@ -74,6 +74,13 @@ int main() {
     setContrast(0x1f);
     setRotation(2);
     introGraphic();
+    //draw satellite image
+    clearDisplay();
+    drawBitmap(0, 0, epd_bitmap_sat1, 0x0054, 0x0030, BLACK);
+    setCursor(10, 40);
+    setTextSize(1);
+    printString("Waiting ...");
+    display();
     //gpio_set_pulls(UART_RX_PIN, gpio_pull_up, gpio_pull_down);
     uart_set_format(UART_ID, 8, 1, UART_PARITY_NONE);
     uart_set_hw_flow(UART_ID, false, false);

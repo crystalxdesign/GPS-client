@@ -34,6 +34,7 @@ extern "C" {
 #endif
 #include "TinyGPSPlus.h"
 #include "Nokia5110.h"
+#include "images.h"
 /*
  * Usual header code here
  */
