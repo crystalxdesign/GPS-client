@@ -1,12 +1,11 @@
 echo(version=version());
 
 $fn=50;
-isRed = true;
-screenWidth = isRed ? 37 : 34;
-screenLength = isRed ? 40 : 40;
-screenHoleOffsetX = isRed ? 0.5 : -2.8;
-screenHoleOffsetY = isRed ? 2.0 : 3.5 ;
-screwHoleRadius = isRed ? 1.0 : 1.65;
+screenWidth = 29.6;
+screenLength = 44.5;
+screenHoleOffsetX = 0.5;
+screenHoleOffsetY = 2.0;
+//screwHoleRadius = 1.0;
 
 basethickness = 4;
 boxLength = 100;
@@ -24,11 +23,11 @@ module main(){
                 difference()  {
                     Base();
                     ScreenHole();
-                    ScrewHoles();
+                    //ScrewHoles();
                     AerialHole();
                     Hollow();
                  };
-                 #Rim();
+                 Rim();
              }
 }
 
