@@ -4,9 +4,11 @@
 #define BUTTON_PIN  16
 
 void GPIO_Button_Callback(uint gpio, uint32_t events);
+void waiting4Satellite(void);
 void mode0(void);
 void mode1(void);
 uint8_t modeSelection = 0;
+bool gpsActive = false;
 const uint8_t MENU_COUNT = 2;
 
 // Define UART pins
@@ -53,6 +55,7 @@ void on_uart_rx() {
     }
     // Print GPS data
     if (gps.location.isValid() && gps.location.isUpdated()) {
+        gpsActive = true;
         std::cout << "Latitude: " << gps.location.lat() << ", Longitude: " << gps.location.lng() << ", Accuracy: " << hdopAssessment() << "\n";
         switch(modeSelection){
             case 0: mode0(); break;
@@ -104,6 +107,23 @@ void GPIO_Button_Callback(uint gpio, uint32_t events)
     }
 }
 
+bool timer_callback(repeating_timer_t *mst) {
+    if(gpsActive == false) waiting4Satellite();
+    gpsActive = false;
+    return true;
+}
+
+void waiting4Satellite(){
+    clearDisplay();
+    drawBitmap(0, 0, epd_bitmap_sat1, 0x0054, 0x0030, BLACK);
+    setCursor(10, 40);
+    setTextSize(1);
+    printString((char*)"Waiting ...");
+    display();
+}
+
+static repeating_timer_t mst;
+
 int main() {
     // Initialize UART
     stdio_usb_init();
@@ -116,7 +136,8 @@ int main() {
     //gpio_pull_up(BUTTON_PIN);
     // Enable the interrupt for Button pin
     gpio_set_irq_enabled_with_callback(BUTTON_PIN, GPIO_IRQ_EDGE_RISE, true, &GPIO_Button_Callback);
-
+    // Add an interval time to test for satallite activity
+    add_repeating_timer_ms(10000, timer_callback, NULL, &mst);
     // call the LCD initialization
     Nokia5110_Init();
     clearDisplay();
@@ -124,12 +145,7 @@ int main() {
     setRotation(2);
     introGraphic();
     //draw satellite image
-    clearDisplay();
-    drawBitmap(0, 0, epd_bitmap_sat1, 0x0054, 0x0030, BLACK);
-    setCursor(10, 40);
-    setTextSize(1);
-    printString((char*)"Waiting ...");
-    display();
+    waiting4Satellite();
     //gpio_set_pulls(UART_RX_PIN, gpio_pull_up, gpio_pull_down);
     uart_set_format(UART_ID, 8, 1, UART_PARITY_NONE);
     uart_set_hw_flow(UART_ID, false, false);
