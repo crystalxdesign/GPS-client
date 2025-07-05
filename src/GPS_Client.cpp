@@ -1,6 +1,13 @@
 #include "GPS_Client.h"
 
 #define UART_ID uart0
+#define BUTTON_PIN  16
+
+void GPIO_Button_Callback(uint gpio, uint32_t events);
+void mode0(void);
+void mode1(void);
+uint8_t modeSelection = 0;
+const uint8_t MENU_COUNT = 2;
 
 // Define UART pins
 const uint UART_TX_PIN = 0; // or your Pico's UART pins
@@ -47,18 +54,50 @@ void on_uart_rx() {
     // Print GPS data
     if (gps.location.isValid()) {
         std::cout << "Latitude: " << gps.location.lat() << ", Longitude: " << gps.location.lng() << ", Accuracy: " << hdopAssessment() << "\n";
-        clearDisplay();
-        setCursor(0, 0);
-        printString((char*)"Latitude:");
-        setCursor(10, 9);
-        printString(std::to_string(gps.location.lat()).data());
-        setCursor(0, 18);
-        printString((char*)"Longitude:");
-        setCursor(10, 27);
-        printString(std::to_string(gps.location.lng()).data());
-        setCursor(0, 37);
-        printString(hdopAssessment().data());
-        display();
+        switch(modeSelection){
+            case 0: mode0(); break;
+            case 1: mode1(); break;
+        }
+    }
+}
+
+void mode1(){
+    clearDisplay();
+    setCursor(0, 0);
+    printString((char*)"Hat size:");
+    setCursor(10, 9);
+    printString(std::to_string(gps.location.lat()).data());
+    setCursor(0, 18);
+    printString((char*)"Inside leg:");
+    setCursor(10, 27);
+    printString(std::to_string(gps.location.lng()).data());
+    setCursor(0, 37);
+    printString(hdopAssessment().data());
+    display();
+}
+
+void mode0(){
+    clearDisplay();
+    setCursor(0, 0);
+    printString((char*)"Latitude:");
+    setCursor(10, 9);
+    printString(std::to_string(gps.location.lat()).data());
+    setCursor(0, 18);
+    printString((char*)"Longitude:");
+    setCursor(10, 27);
+    printString(std::to_string(gps.location.lng()).data());
+    setCursor(0, 37);
+    printString(hdopAssessment().data());
+    display();
+}
+
+void GPIO_Button_Callback(uint gpio, uint32_t events)
+{
+    if (gpio == BUTTON_PIN){
+        modeSelection++;
+        if(modeSelection>=MENU_COUNT){
+            modeSelection = 0;
+        }
     }
 }
 
@@ -68,6 +107,13 @@ int main() {
     uart_init(UART_ID, UART_BAUD);
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+    // Setup menu select button
+    gpio_set_dir(BUTTON_PIN, GPIO_IN);
+    // Enable the internal pullup resistor to Button
+    //gpio_pull_up(BUTTON_PIN);
+    // Enable the interrupt for Button pin
+    gpio_set_irq_enabled_with_callback(BUTTON_PIN, GPIO_IRQ_EDGE_RISE, true, &GPIO_Button_Callback);
+
     // call the LCD initialization
     Nokia5110_Init();
     clearDisplay();
@@ -79,7 +125,7 @@ int main() {
     drawBitmap(0, 0, epd_bitmap_sat1, 0x0054, 0x0030, BLACK);
     setCursor(10, 40);
     setTextSize(1);
-    printString("Waiting ...");
+    printString((char*)"Waiting ...");
     display();
     //gpio_set_pulls(UART_RX_PIN, gpio_pull_up, gpio_pull_down);
     uart_set_format(UART_ID, 8, 1, UART_PARITY_NONE);
