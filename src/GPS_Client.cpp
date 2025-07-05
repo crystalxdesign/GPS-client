@@ -52,7 +52,7 @@ void on_uart_rx() {
         gps.encode(ch);
     }
     // Print GPS data
-    if (gps.location.isValid()) {
+    if (gps.location.isValid() && gps.location.isUpdated()) {
         std::cout << "Latitude: " << gps.location.lat() << ", Longitude: " << gps.location.lng() << ", Accuracy: " << hdopAssessment() << "\n";
         switch(modeSelection){
             case 0: mode0(); break;
@@ -62,17 +62,20 @@ void on_uart_rx() {
 }
 
 void mode1(){
+    std::string time = "Time:" + std::to_string(gps.time.hour()) + ":" + std::to_string(gps.time.minute()) + ":" + std::to_string(gps.time.second());
+    std::string speed = std::to_string(gps.speed.mph());
+    std::string altitude = std::to_string(gps.altitude.feet());
     clearDisplay();
     setCursor(0, 0);
-    printString((char*)"Hat size:");
-    setCursor(10, 9);
-    printString(std::to_string(gps.location.lat()).data());
-    setCursor(0, 18);
-    printString((char*)"Inside leg:");
-    setCursor(10, 27);
-    printString(std::to_string(gps.location.lng()).data());
-    setCursor(0, 37);
-    printString(hdopAssessment().data());
+    printString((char *)time.c_str());
+    setCursor(0, 10);
+    printString((char *)"Speed (mph):");
+    setCursor(10, 20);
+    printString((char *)speed.c_str());
+    setCursor(0, 30);
+    printString((char *)"Alt (feet): ");
+    setCursor(10, 40);
+    printString((char *)altitude.c_str());
     display();
 }
 
