@@ -1177,25 +1177,3 @@ void LCD_Demo(void)
     sleep_ms(2000);
 }
 
-void introGraphic(){
-	testdrawroundrect();
-    sleep_ms(2000);
-    clearDisplay();
-    setCursor(10, 0);
-    setTextSize(1);
-    printString("Crystalx");
-    setCursor(10, 10);
-    setTextSize(1);
-    printString("Design's");
-    setCursor(10, 20);
-    setTextSize(1);
-    printString("GPS");
-    setCursor(10, 30);
-    setTextSize(1);
-    printString("Client");
-	drawLine(10, 40, 70, 40, BLACK);
-	drawLine(10, 42, 70, 42, BLACK);
-	drawLine(10, 44, 70, 44, BLACK);
-    display();
-	sleep_ms(3000);
-}

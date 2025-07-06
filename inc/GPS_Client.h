@@ -32,6 +32,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#define FIRMWARE_VERSION "v1.0.1"
+// Comment out the following RP2030_Zero definition if using a standard pico
+// Uncomment if using a pico zero. See diagrams for differences.
+//#define RP2030_Zero
+#ifdef RP2030_Zero
+#define BUTTON_PIN  8
+#else
+#define BUTTON_PIN  16
+#endif
 #include "TinyGPSPlus.h"
 #include "Nokia5110.h"
 #include "images.h"

@@ -51,9 +51,8 @@
 ** T     N K C D D
 */
 // Hash-out following if using a standard RP2030 PICO Board
-//#define is_RP2030_Zero
 #define SPI_PORT spi0
-#ifdef is_RP2030_Zero
+#ifdef RP2030_Zero
 // CE
 #define LCD_CS   5
 // CLK
@@ -127,7 +126,6 @@ void testfillroundrect(void);
 void testdrawrect(void);
 void testdrawline();
 void LCD_Demo(void);
-void introGraphic(void);
 
 static const unsigned char font[] PROGMEM= {
 		0x00, 0x00, 0x00, 0x00, 0x00,

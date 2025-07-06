@@ -1,10 +1,10 @@
 #include "GPS_Client.h"
 
 #define UART_ID uart0
-#define BUTTON_PIN  16
 
 void GPIO_Button_Callback(uint gpio, uint32_t events);
 void waiting4Satellite(void);
+void introGraphic(void);
 void mode0(void);
 void mode1(void);
 uint8_t modeSelection = 0;
@@ -64,8 +64,21 @@ void on_uart_rx() {
     }
 }
 
+std::string timePad(uint8_t time){
+    std::string retval;
+    if (time < 10) {
+        retval = "0" + std::to_string(time);
+    } else {
+        retval = std::to_string(time);
+    }
+    return retval;
+}
+
 void mode1(){
-    std::string time = "Time:" + std::to_string(gps.time.hour()) + ":" + std::to_string(gps.time.minute()) + ":" + std::to_string(gps.time.second());
+    uint8_t hours = gps.time.hour();
+    uint8_t minutes = gps.time.minute();
+    uint8_t seconds = gps.time.second();
+    std::string time = "Time: " + timePad(gps.time.hour()) + ":" + timePad(gps.time.minute()) + ":" + timePad(gps.time.second());
     std::string speed = std::to_string(gps.speed.mph());
     std::string altitude = std::to_string(gps.altitude.feet());
     clearDisplay();
@@ -111,6 +124,28 @@ bool timer_callback(repeating_timer_t *mst) {
     if(gpsActive == false) waiting4Satellite();
     gpsActive = false;
     return true;
+}
+
+void introGraphic(){
+	testdrawroundrect();
+    sleep_ms(2000);
+    clearDisplay();
+    setCursor(10, 0);
+    setTextSize(1);
+    printString((char *)"Crystalx");
+    setCursor(10, 10);
+    setTextSize(1);
+    printString((char *)"Design's");
+    setCursor(10, 20);
+    setTextSize(1);
+    printString((char *)"GPS");
+    setCursor(10, 30);
+    setTextSize(1);
+    printString((char *)"Client");
+	setCursor(10, 40);
+	printString((char *)FIRMWARE_VERSION);
+    display();
+	sleep_ms(3000);
 }
 
 void waiting4Satellite(){
