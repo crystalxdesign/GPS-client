@@ -2,6 +2,7 @@ echo(version=version());
 
 $fn=50;
 isRed = true;
+useScrewHoles = false;
 screenWidth = isRed ? 37 : 34;
 screenLength = isRed ? 40 : 40;
 screenHoleOffsetX = isRed ? 0.5 : -2.8;
@@ -24,7 +25,7 @@ module main(){
                 difference()  {
                     Base();
                     ScreenHole();
-                    ScrewHoles();
+                    if (useScrewHoles) { ScrewHoles();}
                     AerialHole();
                     Hollow();
                  };
