@@ -35,9 +35,9 @@ extern "C" {
 #define FIRMWARE_VERSION "v1.0.1"
 // Comment out the following RP2030_Zero definition if using a standard pico
 // Uncomment if using a pico zero. See diagrams for differences.
-//#define RP2030_Zero
+#define RP2030_Zero
 #ifdef RP2030_Zero
-#define BUTTON_PIN  8
+#define BUTTON_PIN  7
 #else
 #define BUTTON_PIN  16
 #endif
