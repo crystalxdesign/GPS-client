@@ -14,6 +14,7 @@ add_executable(${PROJECT_NAME}
     src/GPS_Client.cpp
     src/TinyGPSPlus.cpp
     src/Nokia5110.c
+    src/WS2812.cpp
 )
 
 pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/inc/WS2812.pio)
@@ -25,7 +26,6 @@ pico_add_extra_outputs(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME}
     pico_stdlib
     pico_time
-    pico_types
     hardware_uart
     hardware_gpio
     hardware_spi

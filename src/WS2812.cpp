@@ -19,9 +19,9 @@ WS2812::WS2812(uint pin, uint length, PIO pio, uint sm, DataFormat format) {
         case FORMAT_GRB:
             initialize(pin, length, pio, sm, NONE, GREEN, RED, BLUE);
             break;
-        case FORMAT_WRGB:
-            initialize(pin, length, pio, sm, WHITE, RED, GREEN, BLUE);
-            break;
+        //case FORMAT_WRGB:
+        //    initialize(pin, length, pio, sm, WHITE, RED, GREEN, BLUE);
+        //    break;
     }
 }
 
@@ -68,9 +68,9 @@ uint32_t WS2812::convertData(uint32_t rgbw) {
             case BLUE:
                 result |= (rgbw & 0xFF0000) >> 16;
                 break;
-            case WHITE:
-                result |= (rgbw & 0xFF000000) >> 24;
-                break;
+            //case WHITE:
+            //    result |= (rgbw & 0xFF000000) >> 24;
+            //    break;
         }
         result <<= 8;
     }
