@@ -173,12 +173,29 @@ int main() {
     gpio_set_irq_enabled_with_callback(BUTTON_PIN, GPIO_IRQ_EDGE_RISE, true, &GPIO_Button_Callback);
     // Add an interval time to test for satallite activity
     add_repeating_timer_ms(10000, timer_callback, NULL, &mst);
+
+    // initialise RGB LED
+    WS2812 ledStrip(
+        16,                 // Data line is connected to pin 0. (GP0)
+        0,                  // Strip is 6 LEDs long.
+        pio0,               // Use PIO 0 for creating the state machine.
+        0,                  // Index of the state machine that will be created for controlling the LED strip
+                            // You can have 4 state machines per PIO-Block up to 8 overall.
+                            // See Chapter 3 in: https://datasheets.raspberrypi.org/rp2040/rp2040-datasheet.pdf
+        WS2812::FORMAT_GRB  // Pixel format used by the LED strip
+    );
+    // LED RED
+    ledStrip.fill( WS2812::RED );
+    ledStrip.show();
     // call the LCD initialization
     Nokia5110_Init();
     clearDisplay();
     setContrast(0x1f);
     setRotation(2);
     introGraphic();
+    // LED BLUE
+    ledStrip.fill( WS2812::BLUE );
+    ledStrip.show();
     //draw satellite image
     waiting4Satellite();
     //gpio_set_pulls(UART_RX_PIN, gpio_pull_up, gpio_pull_down);
@@ -192,7 +209,9 @@ int main() {
 
     // Now enable the UART to send interrupts - RX only
     uart_set_irq_enables(UART_ID, true, false);
-
+    // LED GREEN
+    ledStrip.fill( WS2812::GREEN );
+    ledStrip.show();
     while (1)
         tight_loop_contents();
     return 0;

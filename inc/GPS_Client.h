@@ -44,6 +44,7 @@ extern "C" {
 #include "TinyGPSPlus.h"
 #include "Nokia5110.h"
 #include "images.h"
+#include "WS2812.hpp"
 /*
  * Usual header code here
  */
