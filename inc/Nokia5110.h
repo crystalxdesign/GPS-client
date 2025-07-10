@@ -49,6 +49,7 @@
 ** R C D D C V L G
 ** S E C I L C E N
 ** T     N K C D D
+**  
 */
 // Hash-out following if using a standard RP2030 PICO Board
 #define SPI_PORT spi0
@@ -56,11 +57,11 @@
 // CE
 #define LCD_CS   5
 // CLK
-#define LCD_SCK  2
+#define LCD_SCK  6
 //DIN
-#define LCD_MOSI 3
-#define LCD_DC   14
-#define LCD_RST  15
+#define LCD_MOSI 7
+#define LCD_DC   12
+#define LCD_RST  13
 #else
 // CE
 #define LCD_CS   17

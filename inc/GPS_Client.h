@@ -38,7 +38,7 @@ extern "C" {
 // Uncomment if using a pico zero. See diagrams for differences.
 //#define RP2030_Zero
 #ifdef RP2030_Zero
-#define BUTTON_PIN  7
+#define BUTTON_PIN  8
 #define WS2812_GPIO 16
 #else
 #define BUTTON_PIN  16
