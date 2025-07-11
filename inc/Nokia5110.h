@@ -42,6 +42,8 @@
 #define PCD8544_SETBIAS 0x10
 #define PCD8544_SETVOP 0x80
 
+#define SPI_PORT spi0
+
 /*
 *** NOKIA 5110 ***
 ** 1 2 3 4 5 6 7 8
@@ -51,8 +53,6 @@
 ** T     N K C D D
 **  
 */
-// Hash-out following if using a standard RP2030 PICO Board
-#define SPI_PORT spi0
 #ifdef RP2030_Zero
 // CE
 #define LCD_CS   5
