@@ -27,6 +27,27 @@ string HDOP_POOR = "Poor";
 // Define TinyGPSPlus
 TinyGPSPlus gps;
 
+// initialise RGB LED
+WS2812 ledStrip(
+    WS2812_GPIO,        // Data line is connected to pin WS2812_GPIO.
+    1,                  // Strip is 1 LEDs long.
+    pio0,               // Use PIO 0 for creating the state machine.
+    0,                  // Index of the state machine that will be created for controlling the LED strip
+                        // You can have 4 state machines per PIO-Block up to 8 overall.
+                        // See Chapter 3 in: https://datasheets.raspberrypi.org/rp2040/rp2040-datasheet.pdf
+    WS2812::FORMAT_RGB  // Pixel format used by the LED strip
+);
+
+void setWS2812(WS2812::DataByte colour){
+    switch(colour){
+        case WS2812::RED:   ledStrip.fill(WS2812::RGB(0, LED_BRIGHTNESS, 0)); break;
+        case WS2812::GREEN: ledStrip.fill(WS2812::RGB(LED_BRIGHTNESS, 0, 0)); break;
+        case WS2812::BLUE:  ledStrip.fill(WS2812::RGB(0, 0, LED_BRIGHTNESS)); break;
+        case WS2812::NONE:  ledStrip.fill(WS2812::RGB(0, 0, 0)); break;
+    }
+    ledStrip.show();
+}
+
 string hdopAssessment(){
     double hdop = gps.hdop.value();
     string ret;
@@ -55,6 +76,9 @@ void on_uart_rx() {
     }
     // Print GPS data
     if (gps.location.isValid() && gps.location.isUpdated()) {
+        if(gpsActive == false){
+            setWS2812( WS2812::NONE );
+        }
         gpsActive = true;
         std::cout << "Latitude: " << gps.location.lat() << ", Longitude: " << gps.location.lng() << ", Accuracy: " << hdopAssessment() << "\n";
         switch(modeSelection){
@@ -84,13 +108,13 @@ void mode1(){
     clearDisplay();
     setCursor(0, 0);
     printString((char *)time.c_str());
-    setCursor(0, 10);
+    setCursor(0, 9);
     printString((char *)"Speed (mph):");
-    setCursor(10, 20);
+    setCursor(10, 18);
     printString((char *)speed.c_str());
-    setCursor(0, 30);
+    setCursor(0, 27);
     printString((char *)"Alt (feet): ");
-    setCursor(10, 40);
+    setCursor(5, 36);
     printString((char *)altitude.c_str());
     display();
 }
@@ -105,7 +129,7 @@ void mode0(){
     printString((char*)"Longitude:");
     setCursor(10, 27);
     printString(std::to_string(gps.location.lng()).data());
-    setCursor(0, 37);
+    setCursor(0, 36);
     printString(hdopAssessment().data());
     display();
 }
@@ -121,7 +145,10 @@ void GPIO_Button_Callback(uint gpio, uint32_t events)
 }
 
 bool timer_callback(repeating_timer_t *mst) {
-    if(gpsActive == false) waiting4Satellite();
+    if(gpsActive == false) {
+        setWS2812( WS2812::BLUE );
+        waiting4Satellite();
+    }
     gpsActive = false;
     return true;
 }
@@ -133,16 +160,16 @@ void introGraphic(){
     setCursor(10, 0);
     setTextSize(1);
     printString((char *)"Crystalx");
-    setCursor(10, 10);
+    setCursor(10, 9);
     setTextSize(1);
     printString((char *)"Design's");
-    setCursor(10, 20);
+    setCursor(10, 18);
     setTextSize(1);
     printString((char *)"GPS");
-    setCursor(10, 30);
+    setCursor(10, 27);
     setTextSize(1);
     printString((char *)"Client");
-	setCursor(10, 40);
+	setCursor(10, 36);
 	printString((char *)FIRMWARE_VERSION);
     display();
 	sleep_ms(3000);
@@ -173,12 +200,20 @@ int main() {
     gpio_set_irq_enabled_with_callback(BUTTON_PIN, GPIO_IRQ_EDGE_RISE, true, &GPIO_Button_Callback);
     // Add an interval time to test for satallite activity
     add_repeating_timer_ms(10000, timer_callback, NULL, &mst);
+
+    // LED RED
+    setWS2812( WS2812::RED );
+
     // call the LCD initialization
     Nokia5110_Init();
     clearDisplay();
     setContrast(0x1f);
     setRotation(2);
     introGraphic();
+
+    // LED BLUE
+    setWS2812( WS2812::BLUE );
+
     //draw satellite image
     waiting4Satellite();
     //gpio_set_pulls(UART_RX_PIN, gpio_pull_up, gpio_pull_down);
@@ -192,6 +227,9 @@ int main() {
 
     // Now enable the UART to send interrupts - RX only
     uart_set_irq_enables(UART_ID, true, false);
+
+    // LED GREEN
+    setWS2812( WS2812::GREEN );
 
     while (1)
         tight_loop_contents();
