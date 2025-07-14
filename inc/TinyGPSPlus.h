@@ -40,10 +40,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define _GPS_MAX_FIELD_SIZE 15
 #define _GPS_EARTH_MEAN_RADIUS 6371009 // old: 6372795
 
-unsigned long millis()
-{
-  return to_ms_since_boot(get_absolute_time());
-}
+#define millis() to_ms_since_boot(get_absolute_time())
+//unsigned long millis()
+//{
+ // return to_ms_since_boot(get_absolute_time());
+//}
 
 struct RawDegrees
 {

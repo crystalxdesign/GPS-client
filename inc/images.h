@@ -1,3 +1,6 @@
+#ifndef __Images_h
+#define __Images_h
+
 #define PROGMEM
 
 // 'sat1', 84x48px
@@ -38,7 +41,9 @@ const unsigned char epd_bitmap_sat1 [] PROGMEM = {
 };
 
 // Array of all bitmaps for convenience. (Total bytes used to store images in PROGMEM = 544)
-const int epd_bitmap_allArray_LEN = 1;
-const unsigned char* epd_bitmap_allArray[1] = {
-	epd_bitmap_sat1
-};
+//const int epd_bitmap_allArray_LEN = 1;
+//const unsigned char* epd_bitmap_allArray[1] = {
+//	epd_bitmap_sat1
+//};
+
+#endif

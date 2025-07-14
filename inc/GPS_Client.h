@@ -36,7 +36,7 @@ extern "C" {
 #define LED_BRIGHTNESS 50
 // Comment out the following RP2030_Zero definition if using a standard pico
 // Uncomment if using a pico zero. See diagrams for differences.
-//#define RP2030_Zero
+#define RP2030_Zero
 #ifdef RP2030_Zero
 #define BUTTON_PIN  8
 #define WS2812_GPIO 16
@@ -48,6 +48,8 @@ extern "C" {
 #include "Nokia5110.h"
 #include "images.h"
 #include "WS2812.hpp"
+#include "ST7567_font.h"
+#include "ST7567_FB.h"
 /*
  * Usual header code here
  */

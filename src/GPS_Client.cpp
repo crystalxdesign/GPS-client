@@ -184,6 +184,9 @@ void waiting4Satellite(){
     display();
 }
 
+//ST7567_FB lcd(LCD_DC, LCD_RST, LCD_CS);
+ST7567_FB lcd(LCD_DC, LCD_RST, LCD_CS, LCD_MOSI, LCD_SCK);
+
 static repeating_timer_t mst;
 
 int main() {
@@ -205,11 +208,19 @@ int main() {
     setWS2812( WS2812::RED );
 
     // call the LCD initialization
-    Nokia5110_Init();
+    /*Nokia5110_Init();
     clearDisplay();
     setContrast(0x1f);
     setRotation(2);
-    introGraphic();
+    introGraphic();*/
+
+    lcd.init();
+    lcd.cls();
+    lcd.setFont(ST7567_font);
+    lcd.printStr(ALIGN_CENTER, 28, (char *)"Hello World!");
+    lcd.drawRectD(0,0,128,64,1);
+    lcd.drawRect(18,20,127-18*2,63-20*2,1);
+    lcd.display();
 
     // LED BLUE
     setWS2812( WS2812::BLUE );

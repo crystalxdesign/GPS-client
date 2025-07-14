@@ -54,22 +54,26 @@
 **  
 */
 #ifdef RP2030_Zero
-// CE
+// CE -> SPI0 CSn
 #define LCD_CS   5
-// CLK
+// CLK -> SPI0 SCK
 #define LCD_SCK  6
-//DIN
+//DIN -> SPI0 TX
 #define LCD_MOSI 7
+// DC -> GP12
 #define LCD_DC   12
+// RST -> GP13
 #define LCD_RST  13
 #else
-// CE
+// CE (SPI0 CSn)
 #define LCD_CS   17
-// CLK
+// CLK (SPI0 SCK)
 #define LCD_SCK  18
-//DIN
+// DIN (SPI0 TX)
 #define LCD_MOSI 19
+// DC -> GP20
 #define LCD_DC   20
+// RST -> GP21
 #define LCD_RST  21
 #endif
 
