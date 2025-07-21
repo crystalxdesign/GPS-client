@@ -34,9 +34,13 @@ extern "C" {
 #endif
 #define FIRMWARE_VERSION "v1.0.1"
 #define LED_BRIGHTNESS 50
-// Comment out the following RP2030_Zero definition if using a standard pico
-// Uncomment if using a pico zero. See diagrams for differences.
-//#define RP2030_Zero
+
+#include "TinyGPSPlus.h"
+#include "Nokia5110.h"
+#include "images.h"
+#include "WS2812.hpp"
+#include "config.h"
+
 #ifdef RP2030_Zero
 #define BUTTON_PIN  8
 #define WS2812_GPIO 16
@@ -44,10 +48,6 @@ extern "C" {
 #define BUTTON_PIN  16
 #define WS2812_GPIO 23
 #endif
-#include "TinyGPSPlus.h"
-#include "Nokia5110.h"
-#include "images.h"
-#include "WS2812.hpp"
 /*
  * Usual header code here
  */
