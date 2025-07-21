@@ -11,6 +11,8 @@
 #include "hardware/uart.h"
 #include "hardware/spi.h"
 
+#include "config.h"
+
 #ifndef NOKIA5110_H_
 #define NOKIA5110_H_
 
